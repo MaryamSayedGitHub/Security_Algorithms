@@ -14,7 +14,45 @@ namespace SecurityLibrary
 
         public string Analyse(string plainText, string cipherText)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            string temp = new string(alphabetic).ToUpper();
+            List<Tuple<char, char>> plain_cipher_mapping = new List<Tuple<char, char>>();
+            var result = new StringBuilder(); bool isFound = false;
+
+            // mapping
+            for (int k = 0; k < plainText.Length; k++)
+            {
+                isFound = plain_cipher_mapping.Exists(t => t.Item1 == char.ToUpper(plainText[k]));
+                if (!isFound)
+                {
+                    plain_cipher_mapping.Add(new Tuple<char, char>(char.ToUpper(plainText[k]), char.ToUpper(cipherText[k])));
+                }
+            }
+
+            char i = 'A';
+            while (i <= 'Z')
+            {
+                var pair = plain_cipher_mapping.Find(t => t.Item1 == i);
+                if (pair == null)
+                {
+                    for (int j = 0; j < temp.Length; j++)
+                    {
+                        isFound = plain_cipher_mapping.Exists(t => t.Item2 == temp[j]);
+                        if (!isFound)
+                        {
+                            result.Append(temp[j]);
+                            plain_cipher_mapping.Add(new Tuple<char, char>(i, temp[j]));
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    result.Append(pair.Item2);
+                }
+                i++;
+            }
+            return result.ToString().ToLower();
         }
 
         public string Decrypt(string cipherText, string key)
