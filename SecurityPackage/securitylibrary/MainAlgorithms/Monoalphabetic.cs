@@ -8,6 +8,10 @@ namespace SecurityLibrary
 {
     public class Monoalphabetic : ICryptographicTechnique<string, string>
     {
+        static char[] alphabetic = new char[26] {
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
         public string Analyse(string plainText, string cipherText)
         {
             throw new NotImplementedException();
@@ -15,7 +19,8 @@ namespace SecurityLibrary
 
         public string Decrypt(string cipherText, string key)
         {
-            throw new NotImplementedException();
+            string decrypted = MainConcept(cipherText, key);
+            return decrypted;
         }
 
         public string Encrypt(string plainText, string key)
@@ -44,6 +49,29 @@ namespace SecurityLibrary
                     result.Append(character);
                 }
             } 
+
+            return result.ToString();
+        }
+        public string MainConcept(string conceptText, string key)
+        {
+            var result = new StringBuilder();
+            bool isLetter = false;
+            foreach (char character in conceptText.ToUpper())
+            {
+                isLetter = char.IsLetter(character);
+                if (isLetter)
+                    for (int i = 0; i < key.Length; i++)
+                    {
+                        char key_ch = char.ToUpper(key[i]);
+                        if (key_ch == character)
+                        {
+                            result.Append(alphabetic[i]);
+                            break;
+                        }
+                    }
+                else
+                    result.Append(character);
+            }
 
             return result.ToString();
         }
