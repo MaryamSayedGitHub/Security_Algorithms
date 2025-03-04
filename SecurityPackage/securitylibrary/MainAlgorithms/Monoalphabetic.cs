@@ -20,7 +20,32 @@ namespace SecurityLibrary
 
         public string Encrypt(string plainText, string key)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            //char[] alphabetic = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+            var result = new StringBuilder(); int index;
+            var alphabetic = new char[26] {
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+            foreach (char character in plainText.ToUpper())
+            {
+                bool isLetter = char.IsLetter(character);
+                if (isLetter)
+                {
+                    for (int i = 0; i < alphabetic.Length; i++)
+                        if (alphabetic[i] == character)
+                        {
+                            result.Append(key[i]); 
+                            break; // stop if found 
+                        }
+                }
+                else
+                {
+                    result.Append(character);
+                }
+            } 
+
+            return result.ToString();
         }
 
         /// <summary>
