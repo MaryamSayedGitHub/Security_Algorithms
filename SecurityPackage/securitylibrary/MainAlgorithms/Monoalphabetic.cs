@@ -147,7 +147,47 @@ namespace SecurityLibrary
         /// <returns>Plain text</returns>
         public string AnalyseUsingCharFrequency(string cipher)
         {
-            throw new NotImplementedException();
+            List<Tuple<char, int>> plain = new List<Tuple<char, int>>();
+            List<KeyValuePair<char, char>> pairs = new List<KeyValuePair<char, char>>();
+            var frequencyInformation = new StringBuilder("ETAOINSRHLDCUMFPGWYBVKXJQZ");
+            var plainText = new StringBuilder();
+            cipher = cipher.ToUpper();
+
+            for (int i = 0; i < cipher.Length; i++)
+            {
+                var tuple = plain.Find(t => t.Item1 == cipher[i]);
+                if (tuple == null)
+                {
+                    plain.Add(new Tuple<char, int>(cipher[i], 1));
+                }
+                else
+                {
+                    int index = plain.IndexOf(tuple);
+                    plain[index] = new Tuple<char, int>(tuple.Item1, tuple.Item2 + 1);
+                }
+            }
+
+            var sortedPlain = plain.OrderByDescending(v => v.Item2).ToList();
+            int c = 0;
+            foreach (var i in sortedPlain)
+            {
+                pairs.Add(new KeyValuePair<char, char>(i.Item1, frequencyInformation[c]));
+                c++;
+            }
+
+            for (int i = 0; i < cipher.Length; i++)
+            {
+                var mappedChar = pairs.Find(t => t.Key == cipher[i]);
+                if (mappedChar.Key != null && mappedChar.Value != null)
+                {
+                    plainText.Append(mappedChar.Value);
+                }
+                else
+                {
+                    plainText.Append(cipher[i]);
+                }
+            }
+            return plainText.ToString().ToLower();
         }
     }
 }
