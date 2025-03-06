@@ -8,19 +8,110 @@ namespace SecurityLibrary
 {
     public class Monoalphabetic : ICryptographicTechnique<string, string>
     {
+        static char[] alphabetic = new char[26] {
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
         public string Analyse(string plainText, string cipherText)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            string temp = new string(alphabetic).ToUpper();
+            List<Tuple<char, char>> plain_cipher_mapping = new List<Tuple<char, char>>();
+            var result = new StringBuilder(); bool isFound = false;
+
+            // mapping
+            for (int k = 0; k < plainText.Length; k++)
+            {
+                isFound = plain_cipher_mapping.Exists(t => t.Item1 == char.ToUpper(plainText[k]));
+                if (!isFound)
+                {
+                    plain_cipher_mapping.Add(new Tuple<char, char>(char.ToUpper(plainText[k]), char.ToUpper(cipherText[k])));
+                }
+            }
+
+            char i = 'A';
+            while (i <= 'Z')
+            {
+                var pair = plain_cipher_mapping.Find(t => t.Item1 == i);
+                if (pair == null)
+                {
+                    for (int j = 0; j < temp.Length; j++)
+                    {
+                        isFound = plain_cipher_mapping.Exists(t => t.Item2 == temp[j]);
+                        if (!isFound)
+                        {
+                            result.Append(temp[j]);
+                            plain_cipher_mapping.Add(new Tuple<char, char>(i, temp[j]));
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    result.Append(pair.Item2);
+                }
+                i++;
+            }
+            return result.ToString().ToLower();
         }
 
         public string Decrypt(string cipherText, string key)
         {
-            throw new NotImplementedException();
+            string decrypted = MainConcept(cipherText, key);
+            return decrypted;
         }
 
         public string Encrypt(string plainText, string key)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            //char[] alphabetic = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+            var result = new StringBuilder(); int index;
+            var alphabetic = new char[26] {
+                'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M',
+                'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
+
+            foreach (char character in plainText.ToUpper())
+            {
+                bool isLetter = char.IsLetter(character);
+                if (isLetter)
+                {
+                    for (int i = 0; i < alphabetic.Length; i++)
+                        if (alphabetic[i] == character)
+                        {
+                            result.Append(key[i]); 
+                            break; // stop if found 
+                        }
+                }
+                else
+                {
+                    result.Append(character);
+                }
+            } 
+
+            return result.ToString();
+        }
+        public string MainConcept(string conceptText, string key)
+        {
+            var result = new StringBuilder();
+            bool isLetter = false;
+            foreach (char character in conceptText.ToUpper())
+            {
+                isLetter = char.IsLetter(character);
+                if (isLetter)
+                    for (int i = 0; i < key.Length; i++)
+                    {
+                        char key_ch = char.ToUpper(key[i]);
+                        if (key_ch == character)
+                        {
+                            result.Append(alphabetic[i]);
+                            break;
+                        }
+                    }
+                else
+                    result.Append(character);
+            }
+
+            return result.ToString();
         }
 
         /// <summary>
@@ -56,7 +147,47 @@ namespace SecurityLibrary
         /// <returns>Plain text</returns>
         public string AnalyseUsingCharFrequency(string cipher)
         {
-            throw new NotImplementedException();
+            List<Tuple<char, int>> plain = new List<Tuple<char, int>>();
+            List<KeyValuePair<char, char>> pairs = new List<KeyValuePair<char, char>>();
+            var frequencyInformation = new StringBuilder("ETAOINSRHLDCUMFPGWYBVKXJQZ");
+            var plainText = new StringBuilder();
+            cipher = cipher.ToUpper();
+
+            for (int i = 0; i < cipher.Length; i++)
+            {
+                var tuple = plain.Find(t => t.Item1 == cipher[i]);
+                if (tuple == null)
+                {
+                    plain.Add(new Tuple<char, int>(cipher[i], 1));
+                }
+                else
+                {
+                    int index = plain.IndexOf(tuple);
+                    plain[index] = new Tuple<char, int>(tuple.Item1, tuple.Item2 + 1);
+                }
+            }
+
+            var sortedPlain = plain.OrderByDescending(v => v.Item2).ToList();
+            int c = 0;
+            foreach (var i in sortedPlain)
+            {
+                pairs.Add(new KeyValuePair<char, char>(i.Item1, frequencyInformation[c]));
+                c++;
+            }
+
+            for (int i = 0; i < cipher.Length; i++)
+            {
+                var mappedChar = pairs.Find(t => t.Key == cipher[i]);
+                if (mappedChar.Key != null && mappedChar.Value != null)
+                {
+                    plainText.Append(mappedChar.Value);
+                }
+                else
+                {
+                    plainText.Append(cipher[i]);
+                }
+            }
+            return plainText.ToString().ToLower();
         }
     }
 }
