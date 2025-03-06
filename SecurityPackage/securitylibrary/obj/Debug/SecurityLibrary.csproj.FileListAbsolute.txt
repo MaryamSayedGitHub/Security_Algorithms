@@ -18,3 +18,9 @@ D:\Level 4\Last Semester\Security\SecurityPackage\SecurityPackage\SecurityLibrar
 D:\Level 4\Last Semester\Security\SecurityPackage\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
 D:\Level 4\Last Semester\Security\SecurityPackage\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.dll
 D:\Level 4\Last Semester\Security\SecurityPackage\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
+C:\Users\20114\source\repos\Security_Algorithms\SecurityPackage\SecurityLibrary\bin\Debug\SecurityLibrary.dll
+C:\Users\20114\source\repos\Security_Algorithms\SecurityPackage\SecurityLibrary\bin\Debug\SecurityLibrary.pdb
+C:\Users\20114\source\repos\Security_Algorithms\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.AssemblyReference.cache
+C:\Users\20114\source\repos\Security_Algorithms\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.csproj.CoreCompileInputs.cache
+C:\Users\20114\source\repos\Security_Algorithms\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.dll
+C:\Users\20114\source\repos\Security_Algorithms\SecurityPackage\SecurityLibrary\obj\Debug\SecurityLibrary.pdb
